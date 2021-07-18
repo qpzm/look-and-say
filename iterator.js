@@ -74,16 +74,18 @@ function group(it) {
           return { done: true };
         } else if (done) { // g !== null
           let result = g;
-          g = null; // then done && g === null
+          g = null; // then done && g === null in the next iteration
           return { done: false, value: result };
         } else if (g === null) {
           g = [value]; // push one char
-        } else if (g[0] === value) {
+        } else if (g[0] === value) { // !done && g !== null && 리스트에 있는 것과 같은 것 -> 추가
           g.push(value);
-        } else {
+        } else { // g[0] !== value
           let result = g;
           g = [value];
-          return { done: false, value: result };
+          // result 의 값이 바뀌는 것은 아님.
+          // Q. g.push(3) 하면 result, g 둘 다 바뀌는데 왜 g = [1] 이렇게 assign 하면 result 는 그대로지?
+          return { done: false, value: result }; // 이전에 쌓아뒀던 리스트 e.g. [1, 1, 1, 1] 는 return
         }
       }
     }
